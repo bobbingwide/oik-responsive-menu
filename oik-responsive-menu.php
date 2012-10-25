@@ -6,7 +6,7 @@ define( 'OIK_RESPONSIVE_MENU_INCLUDED', true );
 Plugin Name: oik responsive menu
 Plugin URI: http://www.oik-plugins.com/oik-plugins/oik-responsive-menu
 Description: Lazy responsive select menu using jQuery
-Version: 0.01
+Version: 0.02
 Author: bobbingwide
 Author URI: http://www.bobbingwide.com
 License: GPL2
@@ -39,7 +39,7 @@ function oik_responsive_menu_init() {
 /**
  * Apply the responsiveMenu jQuery to the required navigation menu
  *
- * Note: Default processing for an Artisteer theme is to select the .art-nav menu and set the minimum window width to 640px
+ * Note: Default processing for an Artisteer theme is to select the menu within .art-nav-outer and set the minimum window width to 640px
  */
 function oik_responsive_menu_wp_footer() {
   $options = get_option( "oik_responsive_menu" );
@@ -56,4 +56,7 @@ function oik_responsive_menu_wp_footer() {
  */
 function oik_responsive_menu_admin_menu() {
   oik_register_plugin_server( __FILE__ );
+  
+  oik_require( "admin/oik-responsive-menu.php", "oik-responsive-menu" );
+  oikrm_lazy_admin_menu(); 
 }

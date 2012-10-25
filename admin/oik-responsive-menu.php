@@ -21,7 +21,7 @@ function oikrm_artisteer_selector( $artisteer_version ) {
  if ( $artisteer_version == "na" ) {
    $selector = null;
  } else {
-   $selector = ".art-nav";
+   $selector = ".art-nav-outer";
  }
  return( $selector );
 }   
@@ -68,3 +68,40 @@ function oikrm_lazy_options() {
   $options['minWidth'] = oikrm_default_minwidth();
   return( $options );
 }
+
+/**
+ * Define oik-responsive-menu settings and page
+ */
+function oikrm_lazy_admin_menu() {
+  register_setting( 'oik_responsive_menu_options', 'oik_responsive_menu', 'oik_plugins_validate' ); // No validation for oik-responsive_menu
+  add_submenu_page( 'oik_menu', 'responsive_menu', "Responsive menu", 'manage_options', 'oik_responsive_menu', "oikrm_options_do_page" );
+}
+
+/**
+ * responsive_menu admin page
+ */
+function oikrm_options_do_page() {
+  oik_menu_header( "Responsive menu" );
+  oik_box( NULL, NULL, "Responsive menu options", "oikrm_options" );
+  oik_menu_footer();
+  bw_flush();
+}
+
+/**
+ * responsive_menu options
+ *        
+ */
+function oikrm_options() {
+  $option = 'oik_responsive_menu'; 
+  $options = bw_form_start( $option, 'oik_responsive_menu_options' );
+  $options['selector'] = bw_array_get_dcb( $options, "selector", null, "oikrm_default_selector" );
+  $options['minWidth'] = bw_array_get_dcb( $options, "minWidth", null, "oikrm_default_minwidth" );
+  
+  bw_textfield_arr( $option, "menu selector", $options, 'selector', 50, null, "required " .kv("placeholder", oikrm_default_selector() ) );
+  bw_textfield_arr( $option, "minimum width", $options, 'minWidth', 10, null, "required " . kv( "placeholder", oikrm_default_minwidth() ) );
+//  bw_textfield_arr( $option, "thankyou text", $options, 'thankyou', 50, null, "required " . kv( "placeholder", oikrm_default_thankyou() ) ); 
+  bw_tablerow( array( "", "<input type=\"submit\" name=\"ok\" value=\"Save changes\" class=\"button-primary\"/>") ); 
+  etag( "table" ); 			
+  etag( "form" );
+  bw_flush();
+} 
